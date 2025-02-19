@@ -60,15 +60,15 @@ Response Format:
   }
 
 
-* Exception Handling
+  Exception Handling
 The application has a global exception handler to handle unexpected errors and return appropriate HTTP responses.
 
-* Future Enhancements
+  Future Enhancements
 - Add user authentication and authorization
 - Implement a frontend dashboard for viewing rewards
 - Store reward points in a separate table for performance optimization
 
-* License
+ License
 
 Contact
 For any queries or support, please contact: [your-email@example.com]
