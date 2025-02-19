@@ -18,20 +18,6 @@ The application retrieves transactions from a database, calculates reward points
 - Lombok (optional)
 - Maven
 
-* Project Structure
-com.example.rewards
-│── controller
-│   └── RewardController.java
-│── exception
-│   └── GlobalExceptionHandler.java
-│── model
-│   └── Transaction.java
-│── repository
-│   └── TransactionRepository.java
-│── service
-│   └── RewardService.java
-│── RewardsApplication.java
-
 * Setup and Installation
 
 -- Prerequisites
@@ -73,13 +59,6 @@ Response Format:
     }
   }
 
-* Database Schema (Transactions Table)
-CREATE TABLE transactions (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    customer_name VARCHAR(255) NOT NULL,
-    amount DOUBLE NOT NULL,
-    transaction_date DATE NOT NULL
-);
 
 * Exception Handling
 The application has a global exception handler to handle unexpected errors and return appropriate HTTP responses.
