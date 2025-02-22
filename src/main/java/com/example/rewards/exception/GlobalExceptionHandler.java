@@ -14,14 +14,13 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     /**
-     * Handles generic exceptions and returns an internal server error response.
+     * Handles NoDataFoundException and returns a NOT FOUND response.
      *
-     * @param e the exception thrown
+     * @param e The thrown NoDataFoundException
      * @return ResponseEntity containing an error message
      */
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, String>> handleException(Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", e.getMessage()));
+    @ExceptionHandler(NoDataFoundException.class)
+    public ResponseEntity<Map<String, String>> handleNoDataFoundException(NoDataFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
     }
 }

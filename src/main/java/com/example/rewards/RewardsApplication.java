@@ -4,9 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- *  Entry point for the Rewards Application.
+ * Entry point for the Rewards Application.
  */
-
 @SpringBootApplication
 public class RewardsApplication {
 

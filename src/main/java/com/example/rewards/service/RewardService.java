@@ -1,5 +1,7 @@
 package com.example.rewards.service;
 
+import com.example.rewards.dto.RewardResponse;
+import com.example.rewards.exception.NoDataFoundException;
 import com.example.rewards.model.Transaction;
 import com.example.rewards.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,9 +9,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
- * Service class for calculating and retrieving reward points based on transactions.
+ * Service class for handling reward calculations.
  */
 @Service
 public class RewardService {
@@ -18,15 +21,20 @@ public class RewardService {
     private TransactionRepository transactionRepository;
 
     /**
-     * Calculates reward points for transactions in the past three months.
+     * Retrieves reward points for transactions in the past three months.
      *
-     * @return A map containing customer names and their corresponding reward points per month.
+     * @return List of RewardResponse containing reward points per customer
      */
-    public Map<String, Map<String, Integer>> getRewardPoints() {
+    public List<RewardResponse> getRewardPoints() {
         LocalDate threeMonthsAgo = LocalDate.now().minusMonths(3);
         LocalDate today = LocalDate.now();
 
         List<Transaction> transactions = transactionRepository.findByTransactionDateBetween(threeMonthsAgo, today);
+
+        if (transactions.isEmpty()) {
+            throw new NoDataFoundException("No transactions found for the past three months.");
+        }
+
         Map<String, Map<String, Integer>> customerRewards = new HashMap<>();
 
         for (Transaction transaction : transactions) {
@@ -38,23 +46,26 @@ public class RewardService {
             customerRewards.get(customer).put(month, customerRewards.get(customer).getOrDefault(month, 0) + points);
         }
 
-        return customerRewards;
+        return customerRewards.entrySet().stream()
+                .map(entry -> new RewardResponse(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
     }
 
     /**
      * Calculates reward points based on the transaction amount.
      *
-     * @param amount The transaction amount.
-     * @return The calculated reward points.
+     * @param amount The transaction amount
+     * @return The calculated reward points
      */
     private int calculateRewardPoints(double amount) {
         int points = 0;
         if (amount > 50) {
-            points += (int) (amount - 50); // 1 point per dollar above $50
+            points += (int) (amount - 50);
         }
         if (amount > 100) {
-            points += (int) (amount - 100); // Additional 1 point per dollar above $100
+            points += (int) (amount - 100);
         }
         return points;
     }
 }
+
